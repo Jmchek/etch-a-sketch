@@ -14,6 +14,7 @@
 // center the container div to be more presentable
 // use loops to create the first row
 // create each grid by creating a new div and appending?
+// create a class for the divs so that they behave and are placed correctly
 // repeat until we hit the end of the 16th row and finish
 // place them in the "container" div
 // make them appear as a grid
