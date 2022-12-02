@@ -6,11 +6,18 @@ body {
     height: 100vh;
 }
 
-.container {
+#container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 700px;
-    width: 700px;
-    background-color: #974e8d;
+    flex-wrap: wrap;
+    height: 720px;
+    width: 720px;
+}
+
+.rowDiv {
+    display: flex;
+    border-style: solid;
+    border-width: 1px;
+    background-color: green;
+    height: 6.25%;
+    width: 100%;
 }
