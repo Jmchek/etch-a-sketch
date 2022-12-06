@@ -12,9 +12,17 @@
 
 //working on this
 function gameButton() {
+    const btnDiv = document.createElement('div');
     const btn = document.createElement('button');
     const bodyTag = document.querySelector('body');
-    bodyTag.appendChild(btn);
+
+    bodyTag.insertBefore(btnDiv, bodyTag.firstChild);
+    btnDiv.appendChild(btn);
+    btnDiv.setAttribute('id', 'gameButtonDiv');
+    btn.setAttribute('id', 'gameButton');
+    btn.textContent = "Start here!";
+
+    btn.onclick = () => console.log("Hello World");
 }
 
 
