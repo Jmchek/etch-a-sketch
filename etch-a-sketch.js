@@ -1,10 +1,18 @@
-// Add a button to the top of the screen that will send the user a popup asking for the number of squares per side for the new grid. Once entered, the existing grid should be removed and a new grid should be generated in the same total space as before (e.g. 960px wide) so that you’ve got a new sketch pad. Tip: Set the limit for the user input to a maximum of 100. A larger number of squares results in more computer resources being used, potentially causing delays, freezing, or crashing that we want to prevent.
-// Research button tags in HTML and how you can make a JavaScript function run when one is clicked.
-// Also check out prompts.
-// You should be able to enter 64 and have a brand new 64x64 grid pop up without changing the total amount of pixels used.
+// Instead of just changing the color of a square from black to white (for example), have each pass through with the mouse change it to a completely random RGB value. Then try having each pass just add another 10% of black to it so that only after 10 passes is the square completely black.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// instead of css to create the hover effect, we will add an event listener for hover which changes the color DONE
 
+
+// we have two kinds of squares, one that is active and ones that are not
+// if we hover over inactive ones, then we change it to a random color
+// if it's active, we take 10% of its current Black value and add that to it
+// check if active, if the classlist contains 'active'
+
+//we misunderstood how rgb code works, once it reaches (0,0,0) then it will become pure black
+// we need to subtract 10 percent from each part and then it will eventually reach that color
+
+// we're working on the change the square to black portion
 
 function gameButton() {
     const btnDiv = document.createElement('div');
@@ -24,7 +32,6 @@ function gameButton() {
         } else {
             btn.textContent = "Start again?";
         }
-        console.log(document.querySelector("#container").firstChild);
         
     });
 }
@@ -42,7 +49,6 @@ function promptUser () {
             alert("Please input a number between 0 and 99.");
             promptUser();
         } else {
-            console.log(userInput);
             gridMaker(userInput);
         }
 }
@@ -69,7 +75,31 @@ function gridMaker(gridDim) {
                 colDivArr[i][j] = document.createElement('div');
                 colDivArr[i][j].setAttribute('class', 'colDiv');
                 colDivArr[i][j].addEventListener('mouseover', () => {
-                    colDivArr[i][j].classList.add('etchedDiv');
+                    if (!colDivArr[i][j].classList.contains('etchedDiv')) {
+                        colDivArr[i][j].classList.add('etchedDiv');
+                        colDivArr[i][j].setAttribute('style', `background-color: ${randomRGB()};`);
+                    } else {
+                        let divBGColor = colDivArr[i][j].style.backgroundColor;
+                        let colorArr = divBGColor.slice(
+                            divBGColor.indexOf("(") + 1, 
+                            divBGColor.indexOf(")")
+                        ).split(", ");
+                        console.log(colorArr);
+                        //for each for colorArr and apply changes
+                        colorArr.forEach(x => {
+                            if (x != 0){
+                                x -= (10/100) * x;
+                            }
+                            colorArr[colorArr.indexOf(x)] = x;
+                        });
+                        console.log(colorArr);
+                        
+                        let newBGColor = "rgb(" + colorArr[0] + ", " + colorArr[1] + ", " + colorArr[2] + ")";
+                        
+                        colDivArr[i][j].setAttribute('style', `background-color: ${newBGColor};`);
+                        //background-color: rgb(92, 123, 224);
+
+                    }
                   });
                 rowDivArr[i].appendChild(colDivArr[i][j]);
             }
@@ -86,6 +116,13 @@ function gridClear() {
     }
 }
 
+function randomRGB() {
+    let x = Math.floor(Math.random() * 256);
+    let y = Math.floor(Math.random() * 256);
+    let z = Math.floor(Math.random() * 256);
+    let RGBColor = "rgb(" + x + "," + y + "," + z + ")"; 
+    return RGBColor; 
+}
 
 
 

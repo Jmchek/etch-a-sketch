@@ -29,14 +29,6 @@ body {
     width: 100%;
 }
 
-.colDiv:hover {
-    background-color: rgb(156, 224, 92);
-}
-
-.etchedDiv {
-    background-color: rgb(156, 224, 92);
-}
-
 #gameButtonDiv {
     display: flex;
     justify-content: center;
