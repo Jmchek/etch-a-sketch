@@ -17,17 +17,14 @@ body {
 
 .rowDiv {
     display: flex;
-    border-style: solid;
-    border-width: 1px;
     background-color: green;
-    height: 6.25%;
     width: 100%;
 }
 
 .colDiv {
     display: flex;
     border-style: solid;
-    border-width: 1px;
+    border-width: 0.1rem;
     background-color: rgb(92, 123, 224);
     width: 100%;
 }

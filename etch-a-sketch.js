@@ -5,12 +5,7 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-//create a button, then append it to the top of the body
-// prompt user
-// we will create a function to do this gameButton
-// we have created gameButton() and now need to add styling for the button
 
-//working on this
 function gameButton() {
     const btnDiv = document.createElement('div');
     const btn = document.createElement('button');
@@ -22,33 +17,73 @@ function gameButton() {
     btn.setAttribute('id', 'gameButton');
     btn.textContent = "Start here!";
 
-    btn.onclick = () => console.log("Hello World");
+    btn.addEventListener('click', promptUser);
+    btn.addEventListener('click', () => {
+        if(document.querySelector("#container").firstChild){
+            btn.textContent = "Clear the board and make another?";
+        } else {
+            btn.textContent = "Start again?";
+        }
+        console.log(document.querySelector("#container").firstChild);
+        
+    });
+}
+
+function promptUser () {
+        let userInput = 0;
+        userInput = prompt("Please input the dimensions of your grid (e.g. 50 for a 50x50 grid). Please keep it under 100.", 16);
+
+        if (userInput === null) {
+            gridClear();
+            return;
+        } else if (userInput > 99 || userInput <= 0) {
+            userInput = 16;
+            gridClear();
+            alert("Please input a number between 0 and 99.");
+            promptUser();
+        } else {
+            console.log(userInput);
+            gridMaker(userInput);
+        }
 }
 
 
-function gridMaker() {
+function gridMaker(gridDim) {
     let rowDivArr = [];
     let colDivArr = [];
+    let rowColSize = gridDim;
     const grabContainer = document.querySelector("#container");
+    gridClear();
     
-    //create row divs
-    for (let i = 0; i < 16; i++){
-        rowDivArr[i] = document.createElement('div');
-        rowDivArr[i].setAttribute('class', 'rowDiv');
-        grabContainer.appendChild(rowDivArr[i]);
-        colDivArr[i] = [];
-
-        //create column divs 
-        for (let j = 0; j < 16; j++){
-            colDivArr[i][j] = document.createElement('div');
-            colDivArr[i][j].setAttribute('class', 'colDiv');
-            colDivArr[i][j].addEventListener('mouseover', () => {
-                colDivArr[i][j].classList.add('etchedDiv');
-              });
-            rowDivArr[i].appendChild(colDivArr[i][j]);
+    
+    if(!grabContainer.firstChild) {
+        //create row divs
+        for (let i = 0; i < rowColSize; i++){
+            rowDivArr[i] = document.createElement('div');
+            rowDivArr[i].setAttribute('class', 'rowDiv');
+            grabContainer.appendChild(rowDivArr[i]);
+            colDivArr[i] = [];
+    
+            //create column divs 
+            for (let j = 0; j < rowColSize; j++){
+                colDivArr[i][j] = document.createElement('div');
+                colDivArr[i][j].setAttribute('class', 'colDiv');
+                colDivArr[i][j].addEventListener('mouseover', () => {
+                    colDivArr[i][j].classList.add('etchedDiv');
+                  });
+                rowDivArr[i].appendChild(colDivArr[i][j]);
+            }
         }
     }
+    
 
+}
+
+function gridClear() {
+    const parent = document.querySelector("#container");
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
 }
 
 
@@ -56,4 +91,3 @@ function gridMaker() {
 
 
 gameButton();
-gridMaker();
