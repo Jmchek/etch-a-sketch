@@ -2,12 +2,19 @@ function gameButton() {
     const btnDiv = document.createElement('div');
     const btn = document.createElement('button');
     const bodyTag = document.querySelector('body');
+    const title = document.createElement('h1');
+
+    
 
     bodyTag.insertBefore(btnDiv, bodyTag.firstChild);
     btnDiv.appendChild(btn);
     btnDiv.setAttribute('id', 'gameButtonDiv');
     btn.setAttribute('id', 'gameButton');
     btn.textContent = "Start here!";
+
+    //title
+    bodyTag.insertBefore(title, btnDiv);
+    title.textContent = "Etch-A-Sketch";
 
     btn.addEventListener('click', promptUser);
     btn.addEventListener('click', () => {
