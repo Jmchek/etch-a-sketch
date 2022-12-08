@@ -1,19 +1,3 @@
-// Instead of just changing the color of a square from black to white (for example), have each pass through with the mouse change it to a completely random RGB value. Then try having each pass just add another 10% of black to it so that only after 10 passes is the square completely black.
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// instead of css to create the hover effect, we will add an event listener for hover which changes the color DONE
-
-
-// we have two kinds of squares, one that is active and ones that are not
-// if we hover over inactive ones, then we change it to a random color
-// if it's active, we take 10% of its current Black value and add that to it
-// check if active, if the classlist contains 'active'
-
-//we misunderstood how rgb code works, once it reaches (0,0,0) then it will become pure black
-// we need to subtract 10 percent from each part and then it will eventually reach that color
-
-// we're working on the change the square to black portion
-
 function gameButton() {
     const btnDiv = document.createElement('div');
     const btn = document.createElement('button');
@@ -72,32 +56,33 @@ function gridMaker(gridDim) {
     
             //create column divs 
             for (let j = 0; j < rowColSize; j++){
+                let oldBGColor = "empty";
+                let oldColorArr = [];
                 colDivArr[i][j] = document.createElement('div');
                 colDivArr[i][j].setAttribute('class', 'colDiv');
+                //color each div different and add hover effect
                 colDivArr[i][j].addEventListener('mouseover', () => {
                     if (!colDivArr[i][j].classList.contains('etchedDiv')) {
                         colDivArr[i][j].classList.add('etchedDiv');
                         colDivArr[i][j].setAttribute('style', `background-color: ${randomRGB()};`);
+                        const oldBGColorGrabber = colDivArr[i][j].style.backgroundColor;
+                        oldBGColor = oldBGColorGrabber;
+                        oldColorArr = oldBGColor.slice(
+                            oldBGColor.indexOf("(") + 1, 
+                            oldBGColor.indexOf(")")
+                        ).split(", ");
                     } else {
                         let divBGColor = colDivArr[i][j].style.backgroundColor;
                         let colorArr = divBGColor.slice(
                             divBGColor.indexOf("(") + 1, 
                             divBGColor.indexOf(")")
                         ).split(", ");
-                        console.log(colorArr);
-                        //for each for colorArr and apply changes
-                        colorArr.forEach(x => {
-                            if (x != 0){
-                                x -= (10/100) * x;
-                            }
-                            colorArr[colorArr.indexOf(x)] = x;
-                        });
-                        console.log(colorArr);
-                        
-                        let newBGColor = "rgb(" + colorArr[0] + ", " + colorArr[1] + ", " + colorArr[2] + ")";
-                        
+
+                        //change bg color slowly to black
+                        let newBGColor = "rgb(" + turnBlack(oldColorArr[0],colorArr[0])  + ", " + turnBlack(oldColorArr[1],colorArr[1]) + ", " + turnBlack(oldColorArr[2],colorArr[2]) + ")";
+
+                        //set new color after adjusting the level of black
                         colDivArr[i][j].setAttribute('style', `background-color: ${newBGColor};`);
-                        //background-color: rgb(92, 123, 224);
 
                     }
                   });
@@ -107,6 +92,13 @@ function gridMaker(gridDim) {
     }
     
 
+}
+
+function turnBlack(oldColor, newColor) {
+    if(newColor >= 0) {
+        let newNum = Math.floor(newColor - oldColor * (10/100));
+        return newNum < 0? 0 : newNum;
+    }
 }
 
 function gridClear() {
